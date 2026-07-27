@@ -5,6 +5,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <StartupObject>Interview_prep_8777.SOLID_Day2</StartupObject>
   </PropertyGroup>
 
 </Project>
