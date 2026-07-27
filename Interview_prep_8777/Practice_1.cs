@@ -20,9 +20,9 @@ namespace Interview_prep_8777
 
         public abstract class BankService
         {
-            private double _balance = 10000; // we are protecting this variable from outside the class by making it private and we also encpasulate this
+            private decimal _balance = 10000; // we are protecting this variable from outside the class by making it private and we also encpasulate this
 
-            protected double Balance // we have created a protected property to access the private variable from derived classes
+            protected decimal Balance // we have created a protected property to access the private variable from derived classes
             {
                 get { return _balance; }
                 set { _balance = value; }
@@ -33,18 +33,18 @@ namespace Interview_prep_8777
                 Console.WriteLine($"Balance : {Balance}");
             }
 
-            public double GetBalance() // we have created a method to get the balance from outside the class
+            public decimal GetBalance() // we have created a method to get the balance from outside the class
             { 
                return Balance;
             }
 
-            public void SetBalance(double amount) // we have created a method to set the balance from outside the class
+            public void SetBalance(decimal amount) // we have created a method to set the balance from outside the class
             { 
               Balance = amount;
             }
 
-            public abstract void Deposit(double amount); // common functionality in all the account classes so we have created an abstract method to implement it in derived classes
-            public abstract void Withdraw(double amount);
+            public abstract void Deposit(decimal amount); // common functionality in all the account classes so we have created an abstract method to implement it in derived classes
+            public abstract void Withdraw(decimal amount);
 
         }
         public interface IinterestCalculater
@@ -54,13 +54,13 @@ namespace Interview_prep_8777
 
         public class  SavingAccount : BankService , IinterestCalculater
         {
-            public override void Deposit(double amount)
+            public override void Deposit(decimal amount)
             {
                 CheckBalance();
                 SetBalance(GetBalance() + amount);
                 Console.WriteLine($"Deposited {amount} to Saving Account. New Balance: {GetBalance()}");
             }
-            public override void Withdraw(double amount)
+            public override void Withdraw(decimal amount)
             {
                 CheckBalance();
                 SetBalance(GetBalance() - amount);
@@ -68,7 +68,7 @@ namespace Interview_prep_8777
             }
             public void calculateinterest()
             {
-                double interest = GetBalance() * 5 / 100;
+                decimal interest = GetBalance() * 5 / 100;
                 SetBalance(GetBalance() + interest);
                 Console.WriteLine($"Interest calculated for Saving Account. New Balance: {GetBalance()}");
 
@@ -77,13 +77,13 @@ namespace Interview_prep_8777
         }
         public class CurrentAccount : BankService
         {
-            public override void Deposit(double amount)
+            public override void Deposit(decimal amount)
             {
                 CheckBalance();
                 SetBalance(GetBalance() + amount);
                 Console.WriteLine($"Deposited {amount} to Current Account. New Balance: {GetBalance()}");
             }
-            public override void Withdraw(double amount)
+            public override void Withdraw(decimal amount)
             {
                 CheckBalance();
                 SetBalance(GetBalance() - amount);
@@ -93,6 +93,7 @@ namespace Interview_prep_8777
 
         }
 
+        #region BAD example of open closed principle
         public class OpenClosed_Principle_BAD
         {
             public class SavingAccount
@@ -114,7 +115,10 @@ namespace Interview_prep_8777
                 }
             }
         }
-            public class OpenClosed_Principle_Good
+        #endregion
+
+        #region GOOD example of open closed principle
+        public class OpenClosed_Principle_Good
             {
 
                 public interface Iinterescalculater
@@ -137,8 +141,134 @@ namespace Interview_prep_8777
                     // AccountBalance = Accountbalance * 10 /100;
                 }
             }
+        }
+
+        #endregion
+
+        #region BAD example of Liskov Substitution Principle
+        public class Liskovsubstitution_Principle_BAD
+        {
+            public class  Saccount : BankService
+            {
+                public override void Deposit(decimal amount)
+                {
+                    throw new NotImplementedException(); // here we are violating the Liskov Substitution Principle because we are not implementing the deposit method in the derived class which is not allowed in Liskov Substitution Principle
+                }
+                public override void Withdraw(decimal amount)
+                {
+                    SetBalance(GetBalance() - amount);
+                }
             }
-                static void Main(string[] args)
+                
+            
+
+        }
+
+        #endregion
+
+        #region BAD example of Interface Segregation Principle
+        public interface IBank
+        {
+            void Deposit(decimal amount);
+            void Withdraw(decimal amount);
+            
+            void CalculateInterest();
+            void ApplyOverdraft();
+            void PrintPassbook();
+            
+            
+        }
+
+        public class SavingAccount_ISP_BAD : IBank
+        {
+            public void Deposit(decimal amount)
+            {
+             // deposit logic
+            }
+            public void Withdraw(decimal amount)
+            {
+                // withdraw logic
+            }
+            public void CalculateInterest()
+            {
+                // AccountBalance = Accountbalance * 5 /100;
+            }
+            public void ApplyOverdraft()
+            {
+                throw new NotImplementedException(); // here we are violating the Interface Segregation Principle because we are not implementing the ApplyOverdraft method in the derived class which is not allowed in Interface Segregation Principle
+            }
+            public void PrintPassbook()
+            {
+               // print passbook logic
+            }
+        }
+
+        #endregion
+        #region Good example of Interface Segregation Principle
+
+        public interface IBank_ISP
+        { 
+        void Deposit(decimal amount);
+            void Withdraw(decimal amount);
+
+        }
+        public interface IPrintPassbook
+        {
+           void PrintPassbook();
+        }
+        public interface IApplyOverdraft
+        {
+            void ApplyOverdraft();
+        }
+
+        public class SavingAccount_ISP_Good : IBank_ISP , IPrintPassbook
+        {
+            public void Deposit(decimal amount)
+            {
+                // deposit logic
+            }
+            public void Withdraw(decimal amount)
+            {
+                // withdraw logic
+            }
+            public void PrintPassbook()
+            { 
+               // Print Passbook logic
+            }
+        }
+
+
+        #endregion
+
+        #region BAD example of Dependency Inversion Principle
+
+        public class Bank_BAD 
+        {
+            SavingAccount account = new SavingAccount();     // here we are violating the Dependency Inversion Principle because the high-level module (Bank) is depending on the low-level module (SavingAccount) directly instead of through an abstraction (BankService)
+            
+        }
+
+        #endregion
+
+        #region GOOD example of Dependency Inversion Principle
+
+        public class Bank_Good
+        { 
+
+            private readonly BankService _account;
+            public Bank_Good(BankService account) // here we are following the Dependency Inversion Principle because the high-level module (Bank) is depending on the low-level module (SavingAccount) through an abstraction (BankService)
+            {
+                _account = account;
+                
+            }
+            public void DepositMoney(decimal amount)
+            {
+                _account.Deposit(amount);
+            }
+
+        }
+        #endregion
+        static void Main(string[] args)
         {
 
             Console.WriteLine("--===Saving Account Operations===--");
@@ -161,7 +291,9 @@ namespace Interview_prep_8777
 
 
             Console.WriteLine("--===Current Account Operations===--");
-
+            
+            Bank_Good bk = new Bank_Good(account);
+            bk.DepositMoney(1000);
 
         }
 

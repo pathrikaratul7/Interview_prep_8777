@@ -215,7 +215,7 @@ namespace Interview_prep_8777
         #region BAD example of Dependency Inversion Principle
         public class Bank
         {
-            SavingAccount account = new SavingAccount();
+            SavingAccount account = new SavingAccount(); // here we are violating the Dependency Inversion Principle because the high-level module (Bank) is depending on the low-level module (SavingAccount) directly, instead of depending on an abstraction (BankService)
         }
 
         #endregion
