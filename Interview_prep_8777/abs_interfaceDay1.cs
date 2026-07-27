@@ -8,45 +8,64 @@ public class abs_interfaceDay1
     // both account having check balance , withdrwal , deposit options
     // calculate interest option available only for saving account
 
-    public abstract class BankService
+    public abstract class BankService // best abstract example
     {
-        public double Balance = 10000;
-        public void CheckBalance() // we shared this common logic everywere (Balance)
+        
+        private double _balance = 10000; // accesible within class only
+
+        protected double Balance     // exposing the private variable to derived classes
         {
-           Console.WriteLine($"Your balance is : { Balance}");
+            get { return _balance; }
+            set { _balance = value; }
         }
-        public abstract void withdraw(double amount);
-        public abstract void deposit(double amount);
-    
+
+        public double GetBalance() // get balance method to access the balance from outside the class
+        {
+            return Balance;
+        }
+
+        protected void SetBalance(double amount)// set balance method to access the balance from outside the class
+        {
+            Balance = amount;
+        }
+
+        public void CheckBalance() // method to check the balance from outside the class
+        {
+            Console.WriteLine($"Balance : {Balance}");
+        }
+
+        public abstract void withdraw(double amount); // this method is abstract and must be implemented by derived classes
+        public abstract void deposit(double amount); // this method is abstract and must be implemented by derived classes
     }
-    public interface IinterestCalculater
+    public interface IinterestCalculater // best interface example
     { 
-      double calculateinterest();
+      double calculateinterest(); // declare method to calculate interest, this method must be implemented by classes that implement this interface
     }
-    public class SavingAccount : BankService , IinterestCalculater
+    public class SavingAccount : BankService , IinterestCalculater // inheriting abstract class and implementing interface
     {
-        public override void withdraw(double amount)
+        public override void deposit(double amount) // best polymorphism overriding the abstract method deposit from BankService class
         {
-            Balance -= amount;
+            SetBalance(GetBalance() + amount); // using the SetBalance method to update the balance
         }
-        public override void deposit(double amount)
+
+        public override void withdraw(double amount) // best polymorphism overriding the abstract method deposit from BankService class
         {
-            Balance += amount;
+            SetBalance(GetBalance() - amount); // using the SetBalance method to update the balance
         }
-        public double calculateinterest()
+        public double calculateinterest() // implementing the method from IinterestCalculater interface
         {
-            return Balance * 5;
+            return Balance * 5; // calculating interest as 5% of the balance
         }
     }
-    public class currentAccount : BankService
+    public class currentAccount : BankService // best example of inheritance, inheriting the abstract class BankService
     {
-        public override void withdraw(double amount)
+        public override void withdraw(double amount) // best polymorphism overriding the abstract method deposit from BankService class
         {
-            Balance -= amount;
+            SetBalance(GetBalance() - amount); // using the SetBalance method to update the balance
         }
-        public override void deposit(double amount)
+        public override void deposit(double amount) // best polymorphism overriding the abstract method deposit from BankService class
         {
-            Balance += amount;
+            SetBalance(GetBalance() + amount); // using the SetBalance method to update the balance
         }
 
     }
@@ -54,7 +73,8 @@ public class abs_interfaceDay1
     static void Main(string[] args)
 
     {
-        SavingAccount savacc = new SavingAccount();
+        BankService savacc;
+        savacc = new SavingAccount();
 
         Console.WriteLine("Saving Account Details");
         savacc.CheckBalance();
@@ -66,18 +86,20 @@ public class abs_interfaceDay1
         savacc.CheckBalance();
         Console.WriteLine("New balance updated, please see below");
 
-        savacc.calculateinterest();
+
+        IinterestCalculater Ical = new SavingAccount();
+        Ical.calculateinterest();
 
         Console.WriteLine("Current Account Details");
-        currentAccount cuacc = new currentAccount();
-        cuacc.CheckBalance();
+        savacc = new currentAccount();
+        savacc.CheckBalance();
         Console.WriteLine("New balance updated, please see below");
-        cuacc.deposit(1000);
+        savacc.deposit(1000);
         Console.WriteLine("New balance updated, please see below");
-        cuacc.CheckBalance();
+        savacc.CheckBalance();
         Console.WriteLine("New balance updated, please see below");
-        cuacc.withdraw(700);
-        cuacc.CheckBalance();
+        savacc.withdraw(700);
+        savacc.CheckBalance();
 
         Console.WriteLine("New balance updated, please see below");
 
