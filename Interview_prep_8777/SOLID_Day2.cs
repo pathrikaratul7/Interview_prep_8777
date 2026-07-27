@@ -12,7 +12,7 @@ namespace Interview_prep_8777
         public abstract class BankService // best abstract example
         {
             // BAD example of Open/Closed principle, this class is not open for extension and closed for modification, if we want to add new functionality we have to modify this class, so we can create a new class for each functionality and inject it into the BankService class
-            #region BAN example of Open/Closed principle
+            #region BAD example of Open/Closed principle
             public void CalculateInterest(string accountType)
             {
                 if (accountType == "Saving")

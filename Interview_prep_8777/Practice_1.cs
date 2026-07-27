@@ -93,7 +93,52 @@ namespace Interview_prep_8777
 
         }
 
-        static void Main(string[] args)
+        public class OpenClosed_Principle_BAD
+        {
+            public class SavingAccount
+            {
+                public void CalculateInterest(string accountType)
+                {
+                    if (accountType == "Saving")
+                    {
+
+                        // AccountBalance = Accountbalance * 5 /100;
+
+                    }
+                    else if (accountType == "salary") // now here we are violating the open closed principle because we are adding new functionality in the existing class which is not allowed in open closed principle
+                    {
+                        // AccountBalance = Accountbalance * 10 /100;
+
+                    }
+
+                }
+            }
+        }
+            public class OpenClosed_Principle_Good
+            {
+
+                public interface Iinterescalculater
+                {
+                    void calculateinterest();
+                }
+
+                public class SavingAccount_Good : Iinterescalculater
+                {
+                    public void calculateinterest()
+                    {
+                        // AccountBalance = Accountbalance * 5 /100;
+
+                    }
+                }
+            public class SalaryAccount_Good : Iinterescalculater
+            {
+                public void calculateinterest()
+                {
+                    // AccountBalance = Accountbalance * 10 /100;
+                }
+            }
+            }
+                static void Main(string[] args)
         {
 
             Console.WriteLine("--===Saving Account Operations===--");
