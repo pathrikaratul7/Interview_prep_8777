@@ -952,7 +952,7 @@ INTO CustomerHistory
 (
     CustomerId,
     CustomerName,
-    Mobile,
+    Mobile,  
     ActionType,
     ActionDate
 )
