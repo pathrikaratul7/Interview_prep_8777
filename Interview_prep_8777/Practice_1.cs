@@ -229,20 +229,51 @@ namespace Interview_prep_8777
         #region BAD example of Liskov Substitution Principle
         public class Liskovsubstitution_Principle_BAD
         {
-            public class  Saccount : BankService
+            public class  FixedDeposit : BankService
             {
                 public override void Deposit(decimal amount)
                 {
-                    throw new NotImplementedException(); // here we are violating the Liskov Substitution Principle because we are not implementing the deposit method in the derived class which is not allowed in Liskov Substitution Principle
+                    SetBalance(GetBalance() + amount);
+                   
                 }
                 public override void Withdraw(decimal amount)
                 {
-                    SetBalance(GetBalance() - amount);
+                    throw new NotImplementedException(); // here we are violating the Liskov Substitution Principle because we are not implementing the deposit method in the derived class which is not allowed in Liskov Substitution Principle
                 }
             }
                 
             
 
+        }
+
+        #endregion
+        #region GOOD example of Liskov Substitution Principle
+        public interface IDeposit
+       {
+            void Deposit(decimal amount);
+        }
+        public interface IWithdraw
+        {
+            void Withdraw(decimal amount);
+        }
+        public class SavingsAccount : IDeposit, IWithdraw
+        {
+            public void Deposit(decimal amount)
+            {
+                Console.WriteLine($"Savings Deposit: {amount}");
+            }
+
+            public void Withdraw(decimal amount)
+            {
+                Console.WriteLine($"Savings Withdraw: {amount}");
+            }
+        }
+        public class FixedDepositAccount : IDeposit
+        {
+            public void Deposit(decimal amount)
+            {
+                Console.WriteLine($"Fixed Deposit: {amount}");
+            }
         }
 
         #endregion
