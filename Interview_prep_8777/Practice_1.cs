@@ -93,6 +93,80 @@ namespace Interview_prep_8777
 
         }
 
+
+        #region BAD example of Single Responsibility Principle
+
+        public class Bank
+        {
+            private decimal Balance = 10000;
+            public void Deposit(decimal amount)
+            { 
+             Balance += amount;
+            }
+            public void Withdraw(decimal amount)
+            { 
+               Balance -= amount;
+
+            }
+            public void Interestcalculater()
+            { 
+              Balance = Balance * 5 / 100;
+            }
+            public void SendEmail()
+            {
+                // send email logic
+            }
+
+        }
+
+        #endregion
+        #region GOOD example of Single Responsibility Principle
+
+        public class BankService_SRP
+        {
+            public decimal Balance = 10000;
+            public void Depsoit(decimal amount)
+            { 
+              Balance += amount;
+            }
+            public void Withdraw(decimal amount)
+            { 
+              Balance -= amount;
+            }
+
+
+        }
+        public class InterestCalculator_SRP
+        {
+              public void CalculateInterest(decimal balance)
+              {
+                // interest calvultor logic
+              }
+        }
+        public class EmailService
+        {
+            public void SendEmail()
+            {
+                // send email logic
+            }
+        }
+        static void Main_SRP(string[] args)
+        {
+            BankService_SRP b = new BankService_SRP();
+            b.Depsoit(1000);
+            b.Withdraw(4000);
+           
+            InterestCalculator_SRP i = new InterestCalculator_SRP();
+            i.CalculateInterest(b.Balance);
+
+
+            EmailService e = new EmailService();
+            e.SendEmail();
+
+
+        }
+        #endregion
+
         #region BAD example of open closed principle
         public class OpenClosed_Principle_BAD
         {
