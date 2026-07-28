@@ -170,7 +170,7 @@ namespace Interview_prep_8777
         #region BAD example of open closed principle
         public class OpenClosed_Principle_BAD
         {
-            public class SavingAccount
+            public class InterestCalculator
             {
                 public void CalculateInterest(string accountType)
                 {
@@ -188,8 +188,8 @@ namespace Interview_prep_8777
 
                 }
             }
-        }
-        #endregion
+        } // in future if we want to add new account type like current account then we have to modify the existing class which is not allowed in open closed principle so we have to create a new class for current account and implement the interest calculation logic in that class
+        #endregion 
 
         #region GOOD example of open closed principle
         public class OpenClosed_Principle_Good
@@ -213,6 +213,13 @@ namespace Interview_prep_8777
                 public void calculateinterest()
                 {
                     // AccountBalance = Accountbalance * 10 /100;
+                }
+            }
+            public class  FixedAccount : Iinterescalculater
+            {
+                public void calculateinterest()
+                {
+                    // AccountBalance = Accountbalance * 15 /100;
                 }
             }
         }
