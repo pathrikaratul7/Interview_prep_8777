@@ -1,0 +1,6 @@
+@Asp_net_core_web_api_Bank_HostAddress = http://localhost:5246
+
+GET {{Asp_net_core_web_api_Bank_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
