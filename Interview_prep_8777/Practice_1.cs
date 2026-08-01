@@ -25,7 +25,7 @@ namespace Interview_prep_8777
             protected decimal Balance // we have created a protected property to access the private variable from derived classes
             {
                 get { return _balance; }
-                set { _balance = value; }
+               private set {  _balance = value; }
             }
 
             public void CheckBalance() // we have created a method to check the balance from outside the class
@@ -46,13 +46,18 @@ namespace Interview_prep_8777
             public abstract void Deposit(decimal amount); // common functionality in all the account classes so we have created an abstract method to implement it in derived classes
             public abstract void Withdraw(decimal amount);
 
+            public  void Deposit(decimal amount,string type)
+            { 
+                
+            }
+
         }
         public interface IinterestCalculater
         {
             void calculateinterest();
         }
-
-        public class  SavingAccount : BankService , IinterestCalculater
+        
+        public class  SavingAccount : BankService, IinterestCalculater 
         {
             public override void Deposit(decimal amount)
             {
@@ -65,6 +70,12 @@ namespace Interview_prep_8777
                 CheckBalance();
                 SetBalance(GetBalance() - amount);
                 Console.WriteLine($"Withdrew {amount} from Saving Account. New Balance: {GetBalance()}");
+            }
+            public new  void Deposit(decimal amount, string type)
+            {
+                CheckBalance();
+                SetBalance(GetBalance() + amount);
+                Console.WriteLine($"virtual {type} Deposited {amount} to Saving Account. New Balance: {GetBalance()}");
             }
             public void calculateinterest()
             {
@@ -384,10 +395,12 @@ namespace Interview_prep_8777
         {
 
             Console.WriteLine("--===Saving Account Operations===--");
-            SavingAccount account; 
+            BankService account; 
 
             account = new SavingAccount();
+            account.Deposit(10000, "Initial Deposit");
             account.Deposit(5000);
+
             account.Withdraw(2000);
 
             IinterestCalculater Ical = (IinterestCalculater)account;
