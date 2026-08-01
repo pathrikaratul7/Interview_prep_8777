@@ -18,7 +18,7 @@ namespace Interview_prep_8777
         // we have common functionality in all the account like check balance , deposit, withdraw so we can create an abstract class and implement it in all the account classes
 
 
-        public abstract class BankService
+        public abstract class BankService        
         {
             private decimal _balance = 10000; // we are protecting this variable from outside the class by making it private and we also encpasulate this
 
