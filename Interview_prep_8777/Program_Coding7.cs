@@ -29,12 +29,47 @@ namespace Interview_prep_8777
             Console.WriteLine(sb.ToString());
 
         }
+        public class Employee
+        { 
+            public int EMPID { get; set; }
+            public string? EMPName { get; set; }
+            public Decimal Salary { get; set; }
+        }
         public static void Main(string[] args)
         {
             string str = "Sharayu atul pathrikar";
 
             reversestring(str);
             reversestringwithbuffer(str);
+
+            List<Employee> emp = new List<Employee>
+           {
+             new   Employee { EMPID = 1, EMPName = "Sharayu", Salary = 50000 },
+             new   Employee { EMPID = 2, EMPName = "Atul", Salary = 60000 },
+             new  Employee { EMPID = 3, EMPName = "Pathrikar", Salary = 70000 }
+           };
+
+            int nthhighsal = 4;
+
+            var NthSal = emp.Select(x => x.Salary)
+                            .Distinct()
+                            .OrderByDescending(x => x)
+                            .Skip(nthhighsal - 1)
+                            .FirstOrDefault();
+
+            var FinalList = emp.Where(x=> x.Salary== NthSal).ToList();
+            if (FinalList != null && FinalList.Count > 0)
+            {
+                foreach (var item in FinalList)
+                {
+                    Console.WriteLine($"Employee ID: {item.EMPID}, Employee Name: {item.EMPName}, Salary: {item.Salary}");
+                }
+
+            }
+            else
+            {
+                Console.WriteLine($"No employee found with the {nthhighsal}th highest salary.");
+            }
         }
        
     }
