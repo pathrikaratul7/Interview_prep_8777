@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Interview_prep_8777
 {
@@ -18,91 +19,182 @@ namespace Interview_prep_8777
         // we have common functionality in all the account like check balance , deposit, withdraw so we can create an abstract class and implement it in all the account classes
 
 
-        public abstract class BankService        
+       
+public abstract class BankAccount
+    {
+            public BankAccount()
+            {
+                    
+            }
+            public BankAccount(decimal initialBalance)
+            {
+                _balance = initialBalance;
+            }
+            // Encapsulation:
+            // Private field cannot be accessed directly from outside.
+            private decimal _balance = 10000;
+
+        // Protected property:
+        // Derived classes can read the balance.
+        // Only BankService can modify it.
+        protected decimal Balance
         {
-            private decimal _balance = 10000; // we are protecting this variable from outside the class by making it private and we also encpasulate this
-
-            protected decimal Balance // we have created a protected property to access the private variable from derived classes
-            {
-                get { return _balance; }
-               private set {  _balance = value; }
-            }
-
-            public void CheckBalance() // we have created a method to check the balance from outside the class
-            {
-                Console.WriteLine($"Balance : {Balance}");
-            }
-
-            public decimal GetBalance() // we have created a method to get the balance from outside the class
-            { 
-               return Balance;
-            }
-
-            public void SetBalance(decimal amount) // we have created a method to set the balance from outside the class
-            { 
-              Balance = amount;
-            }
-
-            public abstract void Deposit(decimal amount); // common functionality in all the account classes so we have created an abstract method to implement it in derived classes
-            public abstract void Withdraw(decimal amount);
-
-            public  void Deposit(decimal amount,string type)
-            { 
-                
-            }
-
+            get { return _balance; }
+            private set { _balance = value; }
         }
-        public interface IinterestCalculater
+
+        // Public method:
+        // Allows outside classes to check the balance.
+        public void CheckBalance()
         {
-            void calculateinterest();
+            Console.WriteLine($"Balance: {Balance}");
         }
-        
-        public class  SavingAccount : BankService, IinterestCalculater 
+
+        // Public method:
+        // Allows outside classes to read the balance.
+        public decimal GetBalance()
         {
-            public override void Deposit(decimal amount)
-            {
-                CheckBalance();
-                SetBalance(GetBalance() + amount);
-                Console.WriteLine($"Deposited {amount} to Saving Account. New Balance: {GetBalance()}");
-            }
-            public override void Withdraw(decimal amount)
-            {
-                CheckBalance();
-                SetBalance(GetBalance() - amount);
-                Console.WriteLine($"Withdrew {amount} from Saving Account. New Balance: {GetBalance()}");
-            }
-            public new  void Deposit(decimal amount, string type)
-            {
-                CheckBalance();
-                SetBalance(GetBalance() + amount);
-                Console.WriteLine($"virtual {type} Deposited {amount} to Saving Account. New Balance: {GetBalance()}");
-            }
-            public void calculateinterest()
-            {
-                decimal interest = GetBalance() * 5 / 100;
-                SetBalance(GetBalance() + interest);
-                Console.WriteLine($"Interest calculated for Saving Account. New Balance: {GetBalance()}");
-
-            }
-
+            return Balance;
         }
-        public class CurrentAccount : BankService
+
+            // Protected method:
+            // Adds money to the account.
+            protected void AddBalance(decimal amount)
+            {
+                if (ValidateAmount(amount, out string msg))
+                {
+
+                    Balance += amount;
+                }
+                else
+                {
+                    Console.WriteLine(msg);
+                }
+            }
+            private bool ValidateAmount(decimal amount, out string msg)
+            {
+                if (amount <= 0)
+                {
+
+                    msg = "Withdrawal amount must be greater than zero.";
+                    return false;
+                }
+                msg = string.Empty;
+                return true;
+              
+            }
+            private bool ValidateSufficientBalance(decimal amount, out string msg)
+            {
+                if (Balance < amount)
+                { 
+                    msg = "Insufficient balance.";
+                    return false;
+                }
+                msg = string.Empty;
+                return true;
+            }
+                    
+            // Protected method:
+            // Removes money from the account.
+            protected void DeductBalance(decimal amount)
         {
-            public override void Deposit(decimal amount)
-            {
-                CheckBalance();
-                SetBalance(GetBalance() + amount);
-                Console.WriteLine($"Deposited {amount} to Current Account. New Balance: {GetBalance()}");
-            }
-            public override void Withdraw(decimal amount)
-            {
-                CheckBalance();
-                SetBalance(GetBalance() - amount);
-                Console.WriteLine($"Withdrew {amount} from Current Account. New Balance: {GetBalance()}");
-            }
-          
-
+           if (ValidateAmount(amount, out string msg) && ValidateSufficientBalance(amount, out msg))
+           {
+                Balance -= amount;
+           }
+           else
+           {
+                Console.WriteLine(msg);
+           }
         }
+
+        // Common operation for all account types.
+        // Each derived class must provide its own implementation.
+        public abstract void Deposit(decimal amount);
+
+        public abstract void Withdraw(decimal amount);
+
+        // Method overloading.
+        public void Deposit(decimal amount, string type)
+        {
+            Console.WriteLine(
+                $"{type} deposit of {amount}"
+            );
+        }
+    }
+
+
+    // Interface:
+    // Defines a contract for accounts that support interest calculation.
+    public interface IInterestCalculator
+    {
+        void CalculateInterest();
+    }
+
+
+    // Saving Account
+    public class SavingAccount : BankAccount, IInterestCalculator
+    {
+        public override void Deposit(decimal amount)
+        {
+            AddBalance(amount);
+
+            Console.WriteLine(
+                $"Deposited {amount} to Saving Account. " +
+                $"New Balance: {GetBalance()}"
+            );
+        }
+
+        public override void Withdraw(decimal amount)
+        {
+            DeductBalance(amount);
+
+            Console.WriteLine(
+                $"Withdrew {amount} from Saving Account. " +
+                $"New Balance: {GetBalance()}"
+            );
+        }
+
+        public void CalculateInterest()
+        {
+            decimal interest = GetBalance() * 5 / 100;
+
+            AddBalance(interest);
+
+            Console.WriteLine(
+                $"Interest calculated at 5%. " +
+                $"Interest: {interest}. " +
+                $"New Balance: {GetBalance()}"
+            );
+        }
+    }
+
+
+    // Current Account
+    public class CurrentAccount : BankAccount
+    {
+        public override void Deposit(decimal amount)
+        {
+            AddBalance(amount);
+
+            Console.WriteLine(
+                $"Deposited {amount} to Current Account. " +
+                $"New Balance: {GetBalance()}"
+            );
+        }
+
+        public override void Withdraw(decimal amount)
+        {
+            DeductBalance(amount);
+
+            Console.WriteLine(
+                $"Withdrew {amount} from Current Account. " +
+                $"New Balance: {GetBalance()}"
+            );
+        }
+    }
+
+
 
 
         #region BAD example of Single Responsibility Principle
@@ -240,11 +332,11 @@ namespace Interview_prep_8777
         #region BAD example of Liskov Substitution Principle
         public class Liskovsubstitution_Principle_BAD
         {
-            public class  FixedDeposit : BankService
+            public class  FixedDeposit : BankAccount
             {
                 public override void Deposit(decimal amount)
                 {
-                    SetBalance(GetBalance() + amount);
+                   // UpdateBalance(GetBalance() + amount);
                    
                 }
                 public override void Withdraw(decimal amount)
@@ -378,8 +470,8 @@ namespace Interview_prep_8777
         public class Bank_Good
         { 
 
-            private readonly BankService _account;
-            public Bank_Good(BankService account) // here we are following the Dependency Inversion Principle because the high-level module (Bank) is depending on the low-level module (SavingAccount) through an abstraction (BankService)
+            private readonly BankAccount _account;
+            public Bank_Good(BankAccount account) // here we are following the Dependency Inversion Principle because the high-level module (Bank) is depending on the low-level module (SavingAccount) through an abstraction (BankService)
             {
                 _account = account;
                 
@@ -393,32 +485,31 @@ namespace Interview_prep_8777
         #endregion
         static void Main(string[] args)
         {
-
-            Console.WriteLine("--===Saving Account Operations===--");
-            BankService account; 
-
+            BankAccount account;
             account = new SavingAccount();
-            account.Deposit(10000, "Initial Deposit");
+
+            account.CheckBalance();
+            // Balance: 10000
+
             account.Deposit(5000);
+            // Deposited 5000 to Saving Account. New Balance: 15000
 
-            account.Withdraw(2000);
+            account.Withdraw(3000);
+            // Withdrew 3000 from Saving Account. New Balance: 12000
+            IInterestCalculator interestCalculator = (IInterestCalculator)account;
+            interestCalculator.CalculateInterest();
+            // Interest calculated at 5%. Interest: 600. New Balance: 12600
+            account.Withdraw(99999999);
+            account.Deposit(-121);
 
-            IinterestCalculater Ical = (IinterestCalculater)account;
+            account = new CurrentAccount();
 
-            Ical.calculateinterest();
-            Console.WriteLine("--===Saving Account Operations===--");
-
-            Console.WriteLine("--===Current Account Operations===--");
-            CurrentAccount curr;
-            curr = new CurrentAccount();
-            curr.Deposit(10000);
-            curr.Withdraw(5000);
+            account.CheckBalance();
+            account.Deposit(2000);
+            account.Withdraw(1000);
 
 
-            Console.WriteLine("--===Current Account Operations===--");
-            
-            Bank_Good bk = new Bank_Good(account);
-            bk.DepositMoney(1000);
+
 
         }
 
