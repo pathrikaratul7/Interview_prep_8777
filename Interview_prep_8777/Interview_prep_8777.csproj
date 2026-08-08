@@ -5,7 +5,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <StartupObject>Interview_prep_8777.Practice_1</StartupObject>
+    <StartupObject>Interview_prep_8777.O_n_O_1</StartupObject>
   </PropertyGroup>
 
 </Project>
