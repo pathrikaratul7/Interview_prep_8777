@@ -79,7 +79,7 @@ namespace Interview_prep_8777
                 bool isduplicate = false;
                 for (int j = 0; j < txtvalue.Length; j++)
                 {
-                    if (1 != j && char.ToLower(txtvalue[i]) == char.ToLower(txtvalue[j]))
+                    if (i != j && char.ToLower(txtvalue[i]) == char.ToLower(txtvalue[j]))
                     {
                         isduplicate = true;
                         break;
@@ -101,11 +101,82 @@ namespace Interview_prep_8777
 
         #endregion
 
+
+        #region Test Reverse string , Test find duplicate , Test Find First non repeting character
+
+        public static void TestRevers(string txtvalue)
+        {
+            string rev = string.Empty;
+            for (int i = 0; i < txtvalue.Length; i++)
+            {
+
+                rev = txtvalue[i] + rev;
+
+            }
+            Console.WriteLine($"Reverce string : {rev}");
+        
+        
+        }
+        public static void TestDuplicate(string txtvalue)
+        {
+
+            for (int i = 0; i < txtvalue.Length; i++)
+            {
+                for (int j = i + 1; j < txtvalue.Length; j++)
+                {
+                    if (Char.ToLower(txtvalue[i]) == char.ToLower(txtvalue[j]))
+                    { 
+                       
+                        Console.WriteLine($"Duplicate character is : {txtvalue[i]}");
+
+                    }
+                
+                }
+              
+            }
+        
+        }
+
+        public static void TestFirstNonRepeting(string txtvalue)
+        {
+            
+
+            for (int i = 0; i < txtvalue.Length; i++)
+            {
+                bool isduplicate = false;
+                for (int j = 0; j < txtvalue.Length; j++)
+                { 
+                    if( i != j && char.ToLower(txtvalue[i]) == char.ToLower(txtvalue[j]))
+                    {
+                        isduplicate = true;
+                        break;
+
+                    }
+
+                }
+                if (!isduplicate)
+                {
+                   Console.WriteLine($"First non repeting character is : {txtvalue[i]}");
+                    break;
+
+                }
+            
+            
+            }
+            
+
+        }
+        #endregion
+
+
         public static void Main(string[] args)
         {
             Console.WriteLine("Enter a string:");
             string txtvalue = Console.ReadLine() ?? string.Empty;
-            
+            //TestRevers(txtvalue);
+            //TestDuplicate(txtvalue);
+            //FirstNonRepeting(txtvalue);
+            //TestFirstNonRepeting(txtvalue);
             Reverse(txtvalue);
             FindDuplicate(txtvalue);
             FirstNonRepeting(txtvalue);
