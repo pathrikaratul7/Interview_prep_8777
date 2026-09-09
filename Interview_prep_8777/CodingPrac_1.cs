@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Interview_prep_8777
 {
-    public class O_n_O_1
+    public class CodingPrac_1
     {
 
         public record Employee(string Name, int Age);

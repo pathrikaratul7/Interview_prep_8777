@@ -1,0 +1,6 @@
+@Tasks_usingEF_HostAddress = http://localhost:5090
+
+GET {{Tasks_usingEF_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

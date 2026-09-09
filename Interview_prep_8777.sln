@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interview_prep_8777", "Inte
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asp_net_core_web_api_Bank", "Asp_net_core_web_api_Bank\Asp_net_core_web_api_Bank.csproj", "{304E3158-F80C-4DEF-B58C-FBFD068B35EF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tasks_usingEF", "Tasks_usingEF\Tasks_usingEF.csproj", "{93398C83-7598-4AD8-A1E1-102C11BF42D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{304E3158-F80C-4DEF-B58C-FBFD068B35EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{304E3158-F80C-4DEF-B58C-FBFD068B35EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{304E3158-F80C-4DEF-B58C-FBFD068B35EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93398C83-7598-4AD8-A1E1-102C11BF42D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93398C83-7598-4AD8-A1E1-102C11BF42D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93398C83-7598-4AD8-A1E1-102C11BF42D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93398C83-7598-4AD8-A1E1-102C11BF42D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
