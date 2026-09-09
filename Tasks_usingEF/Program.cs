@@ -3,9 +3,20 @@ using Microsoft.OpenApi.Interfaces;
 using Microsoft.OpenApi.Models;
 using System.Linq.Expressions;
 using System.Xml;
+using Tasks_usingEF.Database;
+using Microsoft.EntityFrameworkCore;
+using Tasks_usingEF.InterfaceService;
+using Tasks_usingEF.RepositoryService;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
+
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -50,7 +61,7 @@ builder.Services.AddSwaggerGen(SwagOption =>
 
 
 });
-
+builder.Services.AddScoped<IDivision, DivRepo>();
 var app = builder.Build();
 app.MapSwagger();
 app.UseSwagger();
