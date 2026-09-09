@@ -16,24 +16,37 @@ namespace Tasks_usingEF.RepositoryService
         public async Task<IActionResult> AddDivisionAsynch(Division div, CancellationToken cancellationToken)
         {
             _context.divisions.Add(div);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return new OkObjectResult(div);
            
         }
         public async Task<IActionResult> UpdateDivisionAsynch(Division division, CancellationToken cancellationToken)
         {
-            var DivData = await _context.FindAsync<Division>();
+            var DivData = await _context.divisions.FindAsync(division.DIVID);
             if (DivData != null)
             {
-                _context.Update(division);
-                _context.SaveChanges();
+                DivData.DivName = division.DivName;
+                DivData.IsActive = division.IsActive;
+                await _context.SaveChangesAsync(cancellationToken);
                 return new OkObjectResult(division);
             }
             return new NotFoundObjectResult(division);
         }
         public async Task<IActionResult> DeleteDivisionAsync(Division division, CancellationToken cancellationToken)
         {
-            return null;
+            var result = await _context.divisions.FindAsync(division.DIVID);
+            if (result != null)
+            {
+                 _context.divisions.Remove(division);
+                 await _context.SaveChangesAsync(cancellationToken);
+                return new OkObjectResult(result);
+            }
+            return new NotFoundObjectResult(new
+            {
+
+
+            });
+            
         }
         public async Task<IActionResult> GetAllDivisionAsynch(CancellationToken cancellationToken)
         {

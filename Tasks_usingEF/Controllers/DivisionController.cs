@@ -32,5 +32,13 @@ namespace Tasks_usingEF.Controllers
             return Result ?? NotFound();
          
         }
+        [HttpDelete]
+        [Route("DeleteDivisionAsync")]
+        public async Task<IActionResult> DeleteDivisionAsync(Division division, CancellationToken cancellationToken)
+        {
+
+            var Result = await _division.DeleteDivisionAsync(division, cancellationToken);
+            return Result ?? NotFound();
+        }
     }
 }
