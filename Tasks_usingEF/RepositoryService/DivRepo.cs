@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Tasks_usingEF.Database;
 using Tasks_usingEF.InterfaceService;
 using Tasks_usingEF.Models;
@@ -50,12 +51,30 @@ namespace Tasks_usingEF.RepositoryService
         }
         public async Task<IActionResult> GetAllDivisionAsynch(CancellationToken cancellationToken)
         {
-            return null;
+            var query = await _context.divisions.ToListAsync(cancellationToken);
+                 
+
+            return new OkObjectResult(query);
         }
-        public async Task<IActionResult> GetDivisioByIdAsynch(long DIVID, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetDivisioByIdAsynch(long DIVID,int Takelimit,long lastpageDIVID, CancellationToken cancellationToken)
         {
-            var DivData = await _context.divisions.FindAsync(DIVID);
-            return new OkObjectResult(DivData);
+            var data = await _context.divisions.FindAsync(DIVID);
+            if (data == null)
+            {
+
+
+                if (data == null)
+                {
+                    return new NotFoundObjectResult(new
+                    {
+                        StatusCode = 404,
+                        Message = $"No result found for ID {DIVID}"
+                    });
+                }
+
+            }
+
+            return new OkObjectResult(data);
         }
         public async Task<IActionResult> GetDivisionByNameAsynch(string DivName, CancellationToken cancellationToken)
         {

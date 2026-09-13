@@ -10,7 +10,7 @@ namespace Tasks_usingEF.InterfaceService
          Task<IActionResult> UpdateDivisionAsynch(Division division,CancellationToken cancellationToken);
          Task<IActionResult> DeleteDivisionAsync(Division division,CancellationToken cancellationToken);
          Task<IActionResult> GetAllDivisionAsynch(CancellationToken cancellationToken);
-         Task<IActionResult> GetDivisioByIdAsynch(long DIVID, CancellationToken cancellationToken);
+         Task<IActionResult> GetDivisioByIdAsynch(long DIVID,int Takelimit,long lastpageDIVID, CancellationToken cancellationToken);
         Task<IActionResult> GetDivisionByNameAsynch(string DivName, CancellationToken cancellationToken);
         
     }
