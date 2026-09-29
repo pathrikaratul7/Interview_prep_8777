@@ -13,5 +13,7 @@ namespace Tasks_usingEF.Models
 
         [Required(ErrorMessage = "This filed is required, please provide input true or false")]
         public bool IsActive { get; set; } = true;
+
+        public bool IsDeleted {get; set; }
     }
 }

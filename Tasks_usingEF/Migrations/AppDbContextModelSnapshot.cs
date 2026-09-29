@@ -37,6 +37,9 @@ namespace Tasks_usingEF.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.HasKey("DIVID");
 
                     b.ToTable("divisions");
