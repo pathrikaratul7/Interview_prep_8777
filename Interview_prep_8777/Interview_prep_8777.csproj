@@ -5,7 +5,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <StartupObject>Interview_prep_8777.Ref_Out</StartupObject>
+    <StartupObject>Interview_prep_8777.LinqQuery</StartupObject>
   </PropertyGroup>
 
 </Project>

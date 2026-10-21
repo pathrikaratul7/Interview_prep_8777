@@ -57,7 +57,7 @@ namespace Interview_prep_8777
                             .Skip(nthhighsal - 1)
                             .FirstOrDefault();
 
-            var FinalList = emp.Where(x=> x.Salary== NthSal).ToList();
+            var FinalList = emp.Where(x=> x.Salary== NthSal).Select(x => new { x.EMPID,x.EMPName,x.Salary}).ToList();
             if (FinalList != null && FinalList.Count > 0)
             {
                 foreach (var item in FinalList)
